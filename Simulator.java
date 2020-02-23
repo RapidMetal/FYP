@@ -4,6 +4,10 @@ public class Simulator {
 
     private static int sendCount = 5;
     private static Boolean isDataLeft = true;
+    private static int networkDelay = 50;
+    private static int waitTimeout = 5000;
+    private static int requestInterval = 500;
+
     public static int dataToSend = 666;
 
     public static void main(String[] args) throws InterruptedException {
@@ -27,7 +31,7 @@ public class Simulator {
                         sendCount--;
 
                         //Simulate delay between requests
-                        Thread.sleep(500);
+                        Thread.sleep(requestInterval);
                     }
                     catch(InterruptedException e) {
                         isDataLeft = false;
@@ -83,7 +87,7 @@ public class Simulator {
                 _data = _incomingData;
 
                 //Network delay
-                Thread.sleep(50);
+                Thread.sleep(networkDelay);
 
                 //Notify waiting getData()
                 notify();
@@ -94,7 +98,7 @@ public class Simulator {
         public int getData() throws InterruptedException {
             synchronized(this) {
                 //Wait for response, with 5s timeout
-                wait(5000);
+                wait(waitTimeout);
                 int _receivedData = _data;
                 //Set default data (to signify fail)
                 _data = -1;
