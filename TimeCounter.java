@@ -1,18 +1,14 @@
 public class TimeCounter { 
 
-    private static int currTime = 0;
+    private static long startTime;
 
-    public static void addTime(int time){
-        try{
-            currTime += time;
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    public TimeCounter(){
+        startTime = System.currentTimeMillis();
     }
 
-    public static int getCurrTime(){
+    public static long getCurrTime(){
         try{
-            return currTime;
+            return System.currentTimeMillis() - startTime;
         }
         catch(Exception e){
             e.printStackTrace();
