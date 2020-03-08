@@ -24,7 +24,7 @@ public class Device implements Runnable{
     public void send(int _msgSource, int _msgDestination, Connection _connection) {
         //Finish
         try {
-            _connection.sendData(totalSent + 1);
+            _connection.sendData(deviceId*100 + totalSent + 1);
             totalSent++;
             //If request is generated at this node, add generation delay
             if(deviceId == _msgSource) 
