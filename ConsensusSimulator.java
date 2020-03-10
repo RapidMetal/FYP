@@ -75,29 +75,43 @@ public class ConsensusSimulator {
 
                     if (requestSrc == requestDest) {
                         //Handle for direct response
+                        System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
+                        
+                        for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
+                            if(requestSrc != i){
+                                devices[requestSrc].send(requestSrc, requestSrc, deviceConnections[requestSrc][i]);
+                                devices[i].receive(requestSrc, requestSrc, deviceConnections[requestSrc][i]);
+                            }
+                        }
+                        
+                        for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
+                            if(i != requestSrc){
+                                devices[i].send(requestSrc, requestSrc, deviceConnections[i][requestSrc]);
+                                devices[requestSrc].receive(requestSrc, requestSrc, deviceConnections[i][requestSrc]);
+                            }
+                        }
                     }
                     //Handle routing and final response
                     else {
                         /*System.out.println("Generating request between " + requestSrc + " and " + requestDest);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                         devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);*/
+                        System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        
                         for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
                             if(requestSrc != i){
-                                System.out.println("Generating request between " + requestSrc + " and " + i);
                                 devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][i]);
                                 devices[i].receive(requestSrc, requestDest, deviceConnections[requestSrc][i]);
                             }
                         }
                         
                         for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
-                            if(i != requestDest){
-                                System.out.println("Generating request between " + i + " and " + requestDest);
+                            if(i != requestDest && i != requestSrc){
                                 devices[i].send(requestSrc, requestDest, deviceConnections[i][requestDest]);
                                 devices[requestDest].receive(requestSrc, requestDest, deviceConnections[i][requestDest]);
                             }
                         }
 
-                        System.out.println("Generating request between " + requestDest + " and " + requestSrc);
                         devices[requestDest].send(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                         devices[requestSrc].receive(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                     }
