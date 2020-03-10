@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 
-public class P2PSimulator {
+public class ConsensusSimulator {
     private static long timeout;
     private static Random randomizer;
     private static ExecutorService executor;
@@ -78,9 +78,28 @@ public class P2PSimulator {
                     }
                     //Handle routing and final response
                     else {
-                        System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        /*System.out.println("Generating request between " + requestSrc + " and " + requestDest);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
-                        devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
+                        devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);*/
+                        for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
+                            if(requestSrc != i){
+                                System.out.println("Generating request between " + requestSrc + " and " + i);
+                                devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][i]);
+                                devices[i].receive(requestSrc, requestDest, deviceConnections[requestSrc][i]);
+                            }
+                        }
+                        
+                        for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
+                            if(i != requestDest){
+                                System.out.println("Generating request between " + i + " and " + requestDest);
+                                devices[i].send(requestSrc, requestDest, deviceConnections[i][requestDest]);
+                                devices[requestDest].receive(requestSrc, requestDest, deviceConnections[i][requestDest]);
+                            }
+                        }
+
+                        System.out.println("Generating request between " + requestDest + " and " + requestSrc);
+                        devices[requestDest].send(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
+                        devices[requestSrc].receive(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                     }
 
                     //Randomize sleep times -> between 0 to 2*delay*poolSize
