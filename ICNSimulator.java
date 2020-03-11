@@ -55,6 +55,7 @@ public class ICNSimulator {
 
         //Finish threads
         executor.shutdown();
+
         for(int i=0; i<SimulatorAttributes.deviceCount; i++) {
             deviceThreads[i].join();
         }
@@ -78,12 +79,35 @@ public class ICNSimulator {
                     // assume 0 is server
                     if (requestSrc == requestDest) {
                         //Handle for direct response
+                        System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
+                        // deviceid check 
+                        devices[requestSrc].process();
                     }
                     //Handle routing and final response
-                    else {
+                    // central node contacts dest node and node responds
+                    else if(requestSrc == 0 || requestDest == 0 ){
+                       
                         System.out.println("Generating request between " + requestSrc + " and " + requestDest);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                         devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
+
+                        devices[requestDest].send( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
+                        devices[requestSrc].receive( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
+                    }
+
+                    else{
+                        System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][0]);
+                        devices[0].receive(requestSrc, requestDest, deviceConnections[requestSrc][0]);
+
+                        devices[0].send(requestSrc, requestDest, deviceConnections[0][requestDest]);
+                        devices[requestDest].receive(requestSrc, requestDest, deviceConnections[0][requestDest]);
+
+                        devices[requestDest].send( requestSrc, requestDest, deviceConnections[requestDest][0]);
+                        devices[0].receive(requestSrc, requestDest, deviceConnections[requestDest][0]);
+
+                        devices[0].send(requestSrc, requestDest, deviceConnections[0][requestSrc]);
+                        devices[requestSrc].receive(requestSrc, requestDest, deviceConnections[0][requestSrc]);
                     }
 
                     //Randomize sleep times -> between 0 to 2*delay*poolSize
