@@ -24,7 +24,7 @@ public class Device implements Runnable{
     public void send(int _msgSource, int _msgDestination, Connection _connection) {
         //Finish
         try {
-            _connection.sendData(deviceId*100 + totalSent + 1);
+            _connection.sendData(deviceId*1000 + totalSent + 1);
             totalSent++;
             //If request is generated at this node, add generation delay
             if(deviceId == _msgSource) 
@@ -32,8 +32,6 @@ public class Device implements Runnable{
             //Else add forwarding delay
             else
                 Thread.sleep(SimulatorAttributes.forwardRequestDelay);
-            //Log msg send
-            logger.out.println((System.currentTimeMillis() - SimulatorAttributes.startTime) + " MsgSource=" + _msgSource + ", MsgDest=" + _msgDestination + ", sending.");
         }
         catch(InterruptedException e) {
             e.printStackTrace();
@@ -46,7 +44,7 @@ public class Device implements Runnable{
         try {
             lastReceivedValue = _connection.getData();
             totalReceived++;
-            logger.out.println((System.currentTimeMillis() - SimulatorAttributes.startTime) + " MsgSource=" + _msgSource + ", MsgDest=" + _msgDestination + ", " + lastReceivedValue + " received, total=" + totalReceived);
+            logger.logEvent((System.currentTimeMillis() - SimulatorAttributes.startTime), _msgSource, _msgDestination, lastReceivedValue/1000, lastReceivedValue%1000, deviceId, totalReceived);
             //If request is processed at this node, add delay
             if(deviceId == _msgDestination)
                 Thread.sleep(SimulatorAttributes.processRequestDelay);
