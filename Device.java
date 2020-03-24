@@ -10,8 +10,7 @@ public class Device implements Runnable{
     // !!! Must use this !!!
     public Device(int _deviceId, Logger _logger) {
         deviceId = _deviceId;
-        totalSent = 0;
-        totalReceived = deviceId * 100;
+        totalSent = totalReceived = 0;
         lastReceivedValue = -1;
         logger = _logger;
     }
