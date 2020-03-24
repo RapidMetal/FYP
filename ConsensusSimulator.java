@@ -3,12 +3,13 @@ import java.io.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 
-public class P2PSimulator {
+public class ConsensusSimulator {
     private static long timeout;
     private static Random randomizer;
     private static ExecutorService executor;
     static Device[] devices;
     static Connection[][] deviceConnections;
+
 
     public static void main(String[] args) throws InterruptedException,FileNotFoundException {
 
@@ -45,7 +46,7 @@ public class P2PSimulator {
         //Start request generation threads
         for(int i=0; i<SimulatorAttributes.workerThreadPoolSize; i++) {
             //Actual worker thread
-            Runnable worker = new WorkerThread(logger);
+            Runnable worker = new WorkerThread();
             //Run thread
             executor.execute(worker);
             //Wait between thread starts
@@ -62,13 +63,6 @@ public class P2PSimulator {
     //Worker Thread for Request generation and handling
     //Need to change workerThreadPoolSize in SimulatorAttributes according to time taken per request.
     static class WorkerThread implements Runnable{
-
-        private Logger logger;
-
-        public WorkerThread(Logger _logger) {
-            logger = _logger;
-        }
-
         @Override
         public void run(){
             try{
@@ -81,16 +75,45 @@ public class P2PSimulator {
 
                     if (requestSrc == requestDest) {
                         //Handle for direct response
+                        System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
+                        
+                        for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
+                            if(requestSrc != i){
+                                devices[requestSrc].send(requestSrc, requestSrc, deviceConnections[requestSrc][i]);
+                                devices[i].receive(requestSrc, requestSrc, deviceConnections[requestSrc][i]);
+                            }
+                        }
+                        
+                        for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
+                            if(i != requestSrc){
+                                devices[i].send(requestSrc, requestSrc, deviceConnections[i][requestSrc]);
+                                devices[requestSrc].receive(requestSrc, requestSrc, deviceConnections[i][requestSrc]);
+                            }
+                        }
                     }
                     //Handle routing and final response
                     else {
-                        System.out.println("Generating request between " + requestSrc + " and " + requestDest);
-                        long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        /*System.out.println("Generating request between " + requestSrc + " and " + requestDest);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
-                        devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
-                        long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                        //Log message
-                        logger.logMessage(startTime, finishTime, requestSrc, requestDest);
+                        devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);*/
+                        System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        
+                        for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
+                            if(requestSrc != i){
+                                devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][i]);
+                                devices[i].receive(requestSrc, requestDest, deviceConnections[requestSrc][i]);
+                            }
+                        }
+                        
+                        for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
+                            if(i != requestDest && i != requestSrc){
+                                devices[i].send(requestSrc, requestDest, deviceConnections[i][requestDest]);
+                                devices[requestDest].receive(requestSrc, requestDest, deviceConnections[i][requestDest]);
+                            }
+                        }
+
+                        devices[requestDest].send(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
+                        devices[requestSrc].receive(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                     }
 
                     //Randomize sleep times -> between 0 to 2*delay*poolSize
