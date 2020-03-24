@@ -10,13 +10,10 @@ public class ServerSimulator {
 
     private static int workerThreadPool = 5;
     private static int devices = 4;
-    private static int sendCount = 5;
     private static int testTime = 10;
-    private static Boolean isDataLeft = true;
     private static long timeout;
 
     private static int networkDelay = 200;
-    private static int waitTimeout = 5000;
     private static int requestInterval = 500;
     private static int deviceProcessDelay = 20;
     private static int reqGenDelay = 10;
@@ -129,15 +126,15 @@ public class ServerSimulator {
         }
     }
 
-    public static class TimeCounter { 
+    static class TimeCounter { 
 
-        private static long startTime;
+        private long startTime;
 
         public TimeCounter(){
             startTime = System.currentTimeMillis();
         }
 
-        public static long getCurrTime(){
+        public long getCurrTime(){
             try{
                 return System.currentTimeMillis() - startTime;
             }
