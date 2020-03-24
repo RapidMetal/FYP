@@ -10,7 +10,6 @@ public class P2PSimulator {
     static Device[] devices;
     static Connection[][] deviceConnections;
 
-
     public static void main(String[] args) throws InterruptedException,FileNotFoundException {
 
         //Start logger
@@ -46,7 +45,7 @@ public class P2PSimulator {
         //Start request generation threads
         for(int i=0; i<SimulatorAttributes.workerThreadPoolSize; i++) {
             //Actual worker thread
-            Runnable worker = new WorkerThread();
+            Runnable worker = new WorkerThread(logger);
             //Run thread
             executor.execute(worker);
             //Wait between thread starts
@@ -63,6 +62,13 @@ public class P2PSimulator {
     //Worker Thread for Request generation and handling
     //Need to change workerThreadPoolSize in SimulatorAttributes according to time taken per request.
     static class WorkerThread implements Runnable{
+
+        private Logger logger;
+
+        public WorkerThread(Logger _logger) {
+            logger = _logger;
+        }
+
         @Override
         public void run(){
             try{
@@ -79,8 +85,12 @@ public class P2PSimulator {
                     //Handle routing and final response
                     else {
                         System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                         devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
+                        long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        //Log message
+                        logger.logMessage(startTime, finishTime, requestSrc, requestDest);
                     }
 
                     //Randomize sleep times -> between 0 to 2*delay*poolSize
