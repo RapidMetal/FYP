@@ -46,7 +46,7 @@ public class ConsensusSimulator {
         //Start request generation threads
         for(int i=0; i<SimulatorAttributes.workerThreadPoolSize; i++) {
             //Actual worker thread
-            Runnable worker = new WorkerThread();
+            Runnable worker = new WorkerThread(logger);
             //Run thread
             executor.execute(worker);
             //Wait between thread starts
@@ -63,6 +63,13 @@ public class ConsensusSimulator {
     //Worker Thread for Request generation and handling
     //Need to change workerThreadPoolSize in SimulatorAttributes according to time taken per request.
     static class WorkerThread implements Runnable{
+
+        private Logger logger;
+
+        public WorkerThread(Logger _logger) {
+            logger = _logger;
+        }
+
         @Override
         public void run(){
             try{
@@ -76,6 +83,7 @@ public class ConsensusSimulator {
                     if (requestSrc == requestDest) {
                         //Handle for direct response
                         System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
+                        long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         
                         for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
                             if(requestSrc != i){
@@ -90,6 +98,10 @@ public class ConsensusSimulator {
                                 devices[requestSrc].receive(requestSrc, requestSrc, deviceConnections[i][requestSrc]);
                             }
                         }
+
+                        long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        //Log message
+                        logger.logMessage(startTime, finishTime, requestSrc, requestDest);
                     }
                     //Handle routing and final response
                     else {
@@ -97,7 +109,9 @@ public class ConsensusSimulator {
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                         devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);*/
                         System.out.println("Generating request between " + requestSrc + " and " + requestDest);
-                        
+
+                        long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                       
                         for(int i = 0; i < SimulatorAttributes.deviceCount; i++){
                             if(requestSrc != i){
                                 devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][i]);
@@ -114,6 +128,10 @@ public class ConsensusSimulator {
 
                         devices[requestDest].send(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                         devices[requestSrc].receive(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
+
+                        long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        //Log message
+                        logger.logMessage(startTime, finishTime, requestSrc, requestDest);
                     }
 
                     //Randomize sleep times -> between 0 to 2*delay*poolSize
