@@ -10,7 +10,8 @@ public class Device implements Runnable{
     // !!! Must use this !!!
     public Device(int _deviceId, Logger _logger) {
         deviceId = _deviceId;
-        totalSent = totalReceived = 0;
+        totalSent = 0;
+        totalReceived = deviceId * 100;
         lastReceivedValue = -1;
         logger = _logger;
     }
@@ -21,11 +22,11 @@ public class Device implements Runnable{
     }
 
     //Process request directly
-    public void process(int _msgDestination) {
+    public void process() {
         try{
             //Sleep for processing duration
             Thread.sleep(SimulatorAttributes.processRequestDelay);
-            logger.out.println((System.currentTimeMillis() - SimulatorAttributes.startTime) + ", MsgDest=" + _msgDestination + ", processed.");
+            logger.out.println((System.currentTimeMillis() - SimulatorAttributes.startTime) + ", MsgDest=" + deviceId + ", processed.");
         }
         catch(InterruptedException e) {
             e.printStackTrace();
