@@ -33,9 +33,14 @@ for i in range(0,nodeCount):
 # Request Forward Delay: 20
 for i in range(0, len(data)):
     #Add delay for sender
-    if data.iloc[i,0] == data.iloc[i,2]:
+    if data.iloc[i,0] == data.iloc[i,1]:
+        #Direct Node Processing
+        nodeArray[data.iloc[i,0]] += data.iloc[i,2]
+    elif data.iloc[i,0] == data.iloc[i,2]:
+        #Request Generation
         nodeArray[data.iloc[i,2]] += 40
     else:
+        #Request Forwarding
         nodeArray[data.iloc[i,2]] += 20
     
     #Add delay for receiver if processing
@@ -49,6 +54,8 @@ with open(messageLogPath) as csvfile:
     filereader = csv.reader(csvfile, dialect='excel')
     maxRows = 0
     finTime = 0
+    minTime = 10**6
+    maxTime = 0
     resTimes = []
 
     for row in filereader:
@@ -58,6 +65,12 @@ with open(messageLogPath) as csvfile:
             continue
         #Add response times to the response time list
         resTimes.append(int(row[1]) - int(row[0]))
+        
+        ## Modify min and max time values
+        if resTimes[-1] > maxTime:
+            maxTime = resTimes[-1]
+        if resTimes[-1] < minTime:
+            minTime = resTimes[-1]
 
         #Find the finish time
         if int(row[1]) > finTime :
@@ -69,11 +82,14 @@ with open(messageLogPath) as csvfile:
 #Calculate Response Time and throughput
 #Convert from ms to s
 avgResponseTime = Avg(resTimes)/1000
+minResponseTime = minTime/1000
+maxResponseTime = maxTime/1000
 throughput = (maxRows-1)/(finTime/1000)
 
 #Calculate Average and Max
 avgBusyTime = Avg(nodeArray) / simulationDuration * 100
 maxBusyTime = max(nodeArray) / simulationDuration * 100
+minBusyTime = min(nodeArray) / simulationDuration * 100
 
 #Print Response Time(s), Throughput(s), avg Busy Time(%), max Busy time(%)
-print(round(avgResponseTime,2), ',', round(throughput,2), ',', round(avgBusyTime,2), ',', round(maxBusyTime,2))
+print(round(avgResponseTime,2), ',', round(minResponseTime,2), ',', round(maxResponseTime,2), ',', round(throughput,2), ',', round(avgBusyTime,2), ',', round(minBusyTime,2), ',', round(maxBusyTime,2))
