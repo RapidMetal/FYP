@@ -110,10 +110,7 @@ public class BlockchainSimulator {
                             long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                             devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                             devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
-                            long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                            logger.logMessage(startTime, finishTime, requestSrc, requestDest);
-
-                            long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                    
                             devices[requestDest].send( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                             devices[requestSrc].receive( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]); 
                             long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
@@ -122,8 +119,11 @@ public class BlockchainSimulator {
                         else
                         {
                             // do process
+                            long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                             System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
                             devices[requestSrc].process(); 
+                            long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                            logger.logMessage(startTime, finishTime, requestDest, requestSrc);
                         }
                     }
                     
@@ -144,27 +144,21 @@ public class BlockchainSimulator {
                             long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                             devices[requestSrc].send(requestSrc, randomFullNode, deviceConnections[requestSrc][randomFullNode]);
                             devices[randomFullNode].receive(requestSrc, randomFullNode, deviceConnections[requestSrc][randomFullNode]);
-                            long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                            logger.logMessage(startTime, finishTime, requestSrc, requestDest);
-
-                            long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                            
+                            
                             devices[randomFullNode].send( requestSrc, randomFullNode, deviceConnections[randomFullNode][requestSrc]);
                             devices[requestSrc].receive( requestSrc, randomFullNode, deviceConnections[randomFullNode][requestSrc]);
-                            long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                            logger.logMessage(startTime, finishTime, requestDest, requestSrc);
+                           
                             // communicating with destination node
                             
                             if(requestSrc!=requestDest)
                             {
                                 System.out.println("Generating request between " + requestSrc + " and " + requestDest);
 
-                                long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                                
                                 devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                                 devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
-                                long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                                logger.logMessage(startTime, finishTime, requestSrc, requestDest);
-
-                                long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                               
                                 devices[requestDest].send( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                                 devices[requestSrc].receive( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                                 long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
@@ -172,8 +166,11 @@ public class BlockchainSimulator {
                             }
                             else
                             {
+                               
                                 System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
                                 devices[requestSrc].process(); 
+                                long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                                logger.logMessage(startTime, finishTime, requestDest, requestSrc);
                             }
                         }
                         // node is light and has data
@@ -186,10 +183,7 @@ public class BlockchainSimulator {
                                 long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                                 devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                                 devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
-                                long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                                logger.logMessage(startTime, finishTime, requestSrc, requestDest);
-
-                                long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                            
                                 devices[requestDest].send( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                                 devices[requestSrc].receive( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                                 long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
@@ -197,8 +191,11 @@ public class BlockchainSimulator {
                             }
                             else
                             {
+                                long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                                 System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
                                 devices[requestSrc].process(); 
+                                long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                                logger.logMessage(startTime, finishTime, requestDest, requestSrc);
                             }
                         }
                       
@@ -242,10 +239,7 @@ public class BlockchainSimulator {
                                     long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                                     devices[currLightNode].send(currLightNode, randomFullNode, deviceConnections[currLightNode][randomFullNode]);
                                     devices[randomFullNode].receive(currLightNode, randomFullNode, deviceConnections[currLightNode][randomFullNode]);
-                                    long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                                    logger.logMessage(startTime, finishTime, currLightNode, randomFullNode);
-
-                                    long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                                   
                                     devices[randomFullNode].send( currLightNode, randomFullNode, deviceConnections[randomFullNode][currLightNode]);
                                     devices[currLightNode].receive( currLightNode, randomFullNode, deviceConnections[randomFullNode][currLightNode]);
                                     long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
