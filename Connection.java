@@ -38,6 +38,7 @@ public class Connection {
             //Wait for response, with 5s timeout; semaphore
             long _getTimeout = System.currentTimeMillis() + 5000;
             while(data.isEmpty() && System.currentTimeMillis() <= _getTimeout) {
+                //Check every 5ms
                 Thread.sleep(5);
             }
             
