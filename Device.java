@@ -20,9 +20,20 @@ public class Device implements Runnable{
         System.out.println("Device " + deviceId + " started.");
     }
 
+    //Process request directly
+    public void process() {
+        try{
+            //Sleep for processing duration
+            Thread.sleep(SimulatorAttributes.processRequestDelay);
+            logger.out.println((System.currentTimeMillis() - SimulatorAttributes.startTime) + ", MsgDest=" + deviceId + ", processed.");
+        }
+        catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     //Send data
     public void send(int _msgSource, int _msgDestination, Connection _connection) {
-        //Finish
         try {
             _connection.sendData(deviceId*1000 + totalSent + 1);
             totalSent++;
@@ -40,7 +51,6 @@ public class Device implements Runnable{
 
     //Receive data
     public void receive(int _msgSource, int _msgDestination, Connection _connection) {
-        //Finish
         try {
             lastReceivedValue = _connection.getData();
             totalReceived++;
