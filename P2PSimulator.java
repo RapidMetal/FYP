@@ -81,6 +81,11 @@ public class P2PSimulator {
 
                     if (requestSrc == requestDest) {
                         //Handle for direct response
+                        long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        devices[requestSrc].process();
+                        long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        //Log message
+                        logger.logMessage(startTime, finishTime, requestSrc, requestDest);
                     }
                     //Handle routing and final response
                     else {
@@ -88,6 +93,9 @@ public class P2PSimulator {
                         long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                         devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
+
+                        devices[requestDest].send(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
+                        devices[requestSrc].receive(requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                         long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         //Log message
                         logger.logMessage(startTime, finishTime, requestSrc, requestDest);
