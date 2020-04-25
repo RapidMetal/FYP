@@ -46,7 +46,7 @@ public class ICNSimulator {
         //Start request generation threads
         for(int i=0; i<SimulatorAttributes.workerThreadPoolSize; i++) {
             //Actual worker thread
-            Runnable worker = new WorkerThread();
+            Runnable worker = new WorkerThread(logger);
             //Run thread
             executor.execute(worker);
             //Wait between thread starts
@@ -64,6 +64,11 @@ public class ICNSimulator {
     //Worker Thread for Request generation and handling
     //Need to change workerThreadPoolSize in SimulatorAttributes according to time taken per request.
     static class WorkerThread implements Runnable{
+        private Logger logger;
+
+        public WorkerThread(Logger _logger) {
+            logger = _logger;
+        }
         @Override
         public void run(){
             try{
@@ -88,15 +93,19 @@ public class ICNSimulator {
                     else if(requestSrc == 0 || requestDest == 0 ){
                        
                         System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                         devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
 
                         devices[requestDest].send( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                         devices[requestSrc].receive( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
+                        long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        logger.logMessage(startTime, finishTime, requestDest, requestSrc);
                     }
 
                     else{
                         System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][0]);
                         devices[0].receive(requestSrc, requestDest, deviceConnections[requestSrc][0]);
 
@@ -108,6 +117,8 @@ public class ICNSimulator {
 
                         devices[0].send(requestSrc, requestDest, deviceConnections[0][requestSrc]);
                         devices[requestSrc].receive(requestSrc, requestDest, deviceConnections[0][requestSrc]);
+                        long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        logger.logMessage(startTime, finishTime, requestDest, requestSrc);
                     }
 
                     //Randomize sleep times -> between 0 to 2*delay*poolSize
