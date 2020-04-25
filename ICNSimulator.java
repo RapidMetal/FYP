@@ -86,7 +86,10 @@ public class ICNSimulator {
                         //Handle for direct response
                         System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
                         // deviceid check 
+                        long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].process();
+                        long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
+                        logger.logMessage(startTime, finishTime, requestDest, requestSrc);
                     }
                     //Handle routing and final response
                     // central node contacts dest node and node responds
