@@ -1,7 +1,7 @@
 //Class containing program wide constants
 public class SimulatorAttributes {
     //Simulation Runtime in Seconds
-    public static final int simulationRunningTime = 10;
+    public static final int simulationRunningTime = 15;
     //Request Generation Delay
     public static final int delayBetweenRequests = 50;
     //Number of request handler threads
@@ -18,5 +18,11 @@ public class SimulatorAttributes {
     public static final int forwardRequestDelay = 20;
     //Network latency
     public static final int networkLatency = 50;
+    //Probability of blockchain node having data
+    public static final float hasData = 0.5f;
+    // Number of full nodes
+    public static final int fullNodeMax = 3;
+    // poll interval
+    public static final long pollInterval = 2000L;
     
 }
