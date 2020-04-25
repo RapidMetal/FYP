@@ -25,7 +25,21 @@ public class Device implements Runnable{
         try{
             //Sleep for processing duration
             Thread.sleep(SimulatorAttributes.processRequestDelay);
-            logger.out.println((System.currentTimeMillis() - SimulatorAttributes.startTime) + ", MsgDest=" + deviceId + ", processed.");
+            //Delay duration in msgSource, msgDest fields
+            logger.logEvent((System.currentTimeMillis() - SimulatorAttributes.startTime), deviceId, deviceId, SimulatorAttributes.processRequestDelay, totalSent, SimulatorAttributes.processRequestDelay, totalReceived);
+        }
+        catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Process request for given time
+    public void processForTime(int _delay) {
+        try{
+            //Sleep for processing duration
+            Thread.sleep(_delay);
+            //Delay duration in msgSource, msgDest fields
+            logger.logEvent((System.currentTimeMillis() - SimulatorAttributes.startTime), deviceId, deviceId, _delay, totalSent, _delay, totalReceived);
         }
         catch(InterruptedException e) {
             e.printStackTrace();
