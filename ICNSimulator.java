@@ -89,7 +89,7 @@ public class ICNSimulator {
                         long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].process();
                         long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                        logger.logMessage(startTime, finishTime, requestDest, requestSrc);
+                        logger.logMessage(startTime, finishTime, requestSrc, requestDest);
                     }
                     //Handle routing and final response
                     // central node contacts dest node and node responds
@@ -103,7 +103,7 @@ public class ICNSimulator {
                         devices[requestDest].send( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                         devices[requestSrc].receive( requestSrc, requestDest, deviceConnections[requestDest][requestSrc]);
                         long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                        logger.logMessage(startTime, finishTime, requestDest, requestSrc);
+                        logger.logMessage(startTime, finishTime, requestSrc, requestDest);
                     }
 
                     else{
@@ -121,7 +121,7 @@ public class ICNSimulator {
                         devices[0].send(requestSrc, requestDest, deviceConnections[0][requestSrc]);
                         devices[requestSrc].receive(requestSrc, requestDest, deviceConnections[0][requestSrc]);
                         long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                        logger.logMessage(startTime, finishTime, requestDest, requestSrc);
+                        logger.logMessage(startTime, finishTime, requestSrc, requestDest);
                     }
 
                     //Randomize sleep times -> between 0 to 2*delay*poolSize
