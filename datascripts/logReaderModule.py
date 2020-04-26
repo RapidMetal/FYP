@@ -20,7 +20,7 @@ def ReadLog():
     # indices 0 -> InitSrc, 1 -> FinalDest, 2 -> MsgSrc, 3 -> MsgDest
 
     # Get number of nodes
-    nodeCount = data.iloc[:, 0].values.max() + 1
+    nodeCount = data.values.max() + 1
 
     # Make Array for storing node busy times
     nodeArray = []
@@ -94,3 +94,5 @@ def ReadLog():
 
     #Print Response Time(s), Throughput(s), avg Busy Time(%), max Busy time(%)
     return str(round(avgResponseTime,2)) + ', ' + str(round(minResponseTime,2)) + ', ' + str(round(maxResponseTime,2)) + ', ' + str(round(throughput,2)) + ', ' + str(round(avgBusyTime,2)) + ', ' + str(round(minBusyTime,2)) + ', ' + str(round(maxBusyTime,2)) + '\n'
+
+ReadLog()

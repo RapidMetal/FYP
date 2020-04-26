@@ -5,7 +5,6 @@ import os
 
 attributesFilePath = Path('.').parent / 'SimulatorAttributes.java'
 resultArray = ["AvgRes, MinRes, MaxRes, Throughput, AvgLoad, MinLoad, MaxLoad\n"]
-
 #region Single Run for debug
 # currentvalue = 10
 #
@@ -24,9 +23,9 @@ resultArray = ["AvgRes, MinRes, MaxRes, Throughput, AvgLoad, MinLoad, MaxLoad\n"
 # print("Current Run Finished")
 #endregion
 
-lowerBound = 5
-upperBound = 6
-increment = 1
+lowerBound = 8
+upperBound = 8
+increment = 2
 currentValue = lowerBound
 iterationCount = int((upperBound-lowerBound) / increment) + 1
 
@@ -40,8 +39,8 @@ for iteration in range(iterationCount):
         else:
             print(line)
 
-    os.system('javac ConsensusSimulator.java')
-    os.system('java ConsensusSimulator')
+    # os.system('javac ConsensusSimulator.java')
+    # os.system('java ConsensusSimulator')
 
     currentResult = logReaderModule.ReadLog()
     resultArray.append(currentResult)

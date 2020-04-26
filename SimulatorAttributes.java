@@ -3,7 +3,7 @@
 public class SimulatorAttributes {
 
     //Simulation Runtime in Seconds
-    public static final int simulationRunningTime = 15;
+    public static final int simulationRunningTime = 300;
 
     //Request Generation Delay
     public static final int delayBetweenRequests = 50;
@@ -12,7 +12,7 @@ public class SimulatorAttributes {
     public static final int workerThreadPoolSize = 5;
 
     //Number of Devices
-    public static final int deviceCount = 6;
+    public static final int deviceCount = 8;
 
     //Simulation Start Time (internal)
     public static final long startTime = System.currentTimeMillis();

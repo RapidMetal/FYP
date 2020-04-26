@@ -35,7 +35,6 @@ for i in range(0, len(data)):
     #Add delay for sender
     if data.iloc[i,0] == data.iloc[i,1]:
         #Direct Node Processing
-        #3rd column & 4th column contain delay instead of current src & dest
         nodeArray[data.iloc[i,0]] += data.iloc[i,2]
     elif data.iloc[i,0] == data.iloc[i,2]:
         #Request Generation
@@ -43,9 +42,10 @@ for i in range(0, len(data)):
     else:
         #Request Forwarding
         nodeArray[data.iloc[i,2]] += 20
+    
+    #Add delay for receiver if processing
     if data.iloc[i,1] == data.iloc[i,3]:
-        #Add delay for receiver if processing
-        nodeArray[data.iloc[i,1]] += 100
+        nodeArray[data.iloc[i,3]] += 100
 #endregion
 
 #region *** Calc Throughput and Response time; EventLog.csv ***
