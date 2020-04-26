@@ -39,8 +39,8 @@ for iteration in range(iterationCount):
         else:
             print(line)
 
-    # os.system('javac ConsensusSimulator.java')
-    # os.system('java ConsensusSimulator')
+    os.system('javac ConsensusSimulator.java')
+    os.system('java ConsensusSimulator')
 
     currentResult = logReaderModule.ReadLog()
     resultArray.append(currentResult)
