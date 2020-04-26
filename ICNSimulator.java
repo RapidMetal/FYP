@@ -42,7 +42,7 @@ public class ICNSimulator {
 
         //Make thread pool
         executor = Executors.newFixedThreadPool(SimulatorAttributes.workerThreadPoolSize);
-
+        System.out.println(java.time.LocalTime.now() + ": Running simulation for " + SimulatorAttributes.simulationRunningTime + " seconds...");
         //Start request generation threads
         for(int i=0; i<SimulatorAttributes.workerThreadPoolSize; i++) {
             //Actual worker thread
@@ -84,7 +84,7 @@ public class ICNSimulator {
                     // assume 0 is server
                     if (requestSrc == requestDest) {
                         //Handle for direct response
-                        System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
+                        //System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
                         // deviceid check 
                         long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].process();
@@ -95,7 +95,7 @@ public class ICNSimulator {
                     // central node contacts dest node and node responds
                     else if(requestSrc == 0 || requestDest == 0 ){
                        
-                        System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        //System.out.println("Generating request between " + requestSrc + " and " + requestDest);
                         long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                         devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
@@ -107,7 +107,7 @@ public class ICNSimulator {
                     }
 
                     else{
-                        System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        //System.out.println("Generating request between " + requestSrc + " and " + requestDest);
                         long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][0]);
                         devices[0].receive(requestSrc, requestDest, deviceConnections[requestSrc][0]);

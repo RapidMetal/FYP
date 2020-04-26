@@ -17,7 +17,7 @@ public class Device implements Runnable{
 
     //reqd run method for Runnable interface
     public void run() {
-        System.out.println("Device " + deviceId + " started.");
+        //System.out.println("Device " + deviceId + " started.");
     }
 
     //Process request directly

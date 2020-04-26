@@ -2,3 +2,4 @@
 *.class
 OutputLog.txt
 *.csv
+__pycache__

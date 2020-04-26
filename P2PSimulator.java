@@ -41,7 +41,7 @@ public class P2PSimulator {
 
         //Make thread pool
         executor = Executors.newFixedThreadPool(SimulatorAttributes.workerThreadPoolSize);
-
+        System.out.println(java.time.LocalTime.now() + ": Running simulation for " + SimulatorAttributes.simulationRunningTime + " seconds...");
         //Start request generation threads
         for(int i=0; i<SimulatorAttributes.workerThreadPoolSize; i++) {
             //Actual worker thread
@@ -89,7 +89,7 @@ public class P2PSimulator {
                     }
                     //Handle routing and final response
                     else {
-                        System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                        //System.out.println("Generating request between " + requestSrc + " and " + requestDest);
                         long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                         devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
                         devices[requestDest].receive(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);

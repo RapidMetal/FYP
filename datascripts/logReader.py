@@ -19,7 +19,7 @@ data = eventLog.iloc[:, [1,2,3,5]]
 # indices 0 -> InitSrc, 1 -> FinalDest, 2 -> MsgSrc, 3 -> MsgDest
 
 # Get number of nodes
-nodeCount = data.iloc[:, 0].values.max() + 1
+nodeCount = data.values.max() + 1
 
 # Make Array for storing node busy times
 nodeArray = []
@@ -35,6 +35,7 @@ for i in range(0, len(data)):
     #Add delay for sender
     if data.iloc[i,0] == data.iloc[i,1]:
         #Direct Node Processing
+        #3rd column & 4th column contain delay instead of current src & dest
         nodeArray[data.iloc[i,0]] += data.iloc[i,2]
     elif data.iloc[i,0] == data.iloc[i,2]:
         #Request Generation
@@ -42,10 +43,9 @@ for i in range(0, len(data)):
     else:
         #Request Forwarding
         nodeArray[data.iloc[i,2]] += 20
-    
-    #Add delay for receiver if processing
     if data.iloc[i,1] == data.iloc[i,3]:
-        nodeArray[data.iloc[i,3]] += 100
+        #Add delay for receiver if processing
+        nodeArray[data.iloc[i,1]] += 100
 #endregion
 
 #region *** Calc Throughput and Response time; EventLog.csv ***

@@ -50,7 +50,7 @@ public class BlockchainSimulator {
         
         //Make thread pool
         executor = Executors.newFixedThreadPool(SimulatorAttributes.workerThreadPoolSize);
-        
+        System.out.println(java.time.LocalTime.now() + ": Running simulation for " + SimulatorAttributes.simulationRunningTime + " seconds...");
         // starting polling thread
         Runnable poller = new pollThread();
         Thread polling = new Thread(poller);
@@ -105,7 +105,7 @@ public class BlockchainSimulator {
                         // communicate with dest node
                         if(requestSrc!=requestDest)
                         {
-                            System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                            // System.out.println("Generating request between " + requestSrc + " and " + requestDest);
 
                             long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                             devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
@@ -120,7 +120,7 @@ public class BlockchainSimulator {
                         {
                             // do process
                             long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                            System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
+                            // System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
                             devices[requestSrc].process(); 
                             long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                             logger.logMessage(startTime, finishTime, requestSrc, requestDest);
@@ -139,7 +139,7 @@ public class BlockchainSimulator {
                             //choosing random full node
                             int randomFullNode = randomizer.nextInt(SimulatorAttributes.fullNodeMax);
                             // commuicating with it
-                            System.out.println("Generating request between " + requestSrc + " and " + randomFullNode);
+                            // System.out.println("Generating request between " + requestSrc + " and " + randomFullNode);
 
                             long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                             devices[requestSrc].send(requestSrc, randomFullNode, deviceConnections[requestSrc][randomFullNode]);
@@ -153,7 +153,7 @@ public class BlockchainSimulator {
                             
                             if(requestSrc!=requestDest)
                             {
-                                System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                                // System.out.println("Generating request between " + requestSrc + " and " + requestDest);
 
                                 
                                 devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
@@ -167,7 +167,7 @@ public class BlockchainSimulator {
                             else
                             {
                                
-                                System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
+                                // System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
                                 devices[requestSrc].process(); 
                                 long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                                 logger.logMessage(startTime, finishTime, requestSrc, requestDest);
@@ -178,7 +178,7 @@ public class BlockchainSimulator {
 
                             if(requestSrc!=requestDest)
                             {
-                                System.out.println("Generating request between " + requestSrc + " and " + requestDest);
+                                // System.out.println("Generating request between " + requestSrc + " and " + requestDest);
 
                                 long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                                 devices[requestSrc].send(requestSrc, requestDest, deviceConnections[requestSrc][requestDest]);
@@ -192,7 +192,7 @@ public class BlockchainSimulator {
                             else
                             {
                                 long startTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
-                                System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
+                                // System.out.println("Generating request between " + requestSrc + " and " + requestSrc);
                                 devices[requestSrc].process(); 
                                 long finishTime = (System.currentTimeMillis() - SimulatorAttributes.startTime);
                                 logger.logMessage(startTime, finishTime, requestSrc, requestDest);
@@ -234,7 +234,7 @@ public class BlockchainSimulator {
                                     // select random full node
                                     int randomFullNode = randomizer.nextInt(SimulatorAttributes.fullNodeMax);
 
-                                    System.out.println("polling between " + currLightNode + " and " + randomFullNode);
+                                    // System.out.println("polling between " + currLightNode + " and " + randomFullNode);
                                     hasPolled[currLightNode]=1;
                                     //Consider adding to log?
                                     //Add delay for blockchain processing
